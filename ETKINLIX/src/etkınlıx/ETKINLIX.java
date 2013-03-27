@@ -26,7 +26,7 @@ public class ETKINLIX {
 
             Driver drv = (Driver) c.newInstance();
 
-            Connection conn = drv.connect("jdbc:sqlserver://127.0.0.1; databaseName=EtkinliX; user=sa; password=1234567?", null);
+            Connection conn = drv.connect("jdbc:sqlserver://159.253.37.201; databaseName=mustafa; user=mustafauser; password=mustafa2703", null);
 
             Statement stmt = conn.createStatement();
 
@@ -34,11 +34,11 @@ public class ETKINLIX {
 
             ResultSet rs;
 
-            rs = stmt.executeQuery("select * from Yorumlar ");
+            rs = stmt.executeQuery("select * from eceokul.Yorumlar ");
 
             while (rs.next()) {
 
-                System.out.println(rs.getString("title"));
+                System.out.println(rs.getString("Yorum_yapan_kisi_mail"));
             }
 
         } catch (ClassNotFoundException e) {
