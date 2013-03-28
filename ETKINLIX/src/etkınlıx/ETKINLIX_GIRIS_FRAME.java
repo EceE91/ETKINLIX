@@ -38,11 +38,6 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextPane1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTextPane1MouseClicked(evt);
-            }
-        });
         jScrollPane1.setViewportView(jTextPane1);
 
         jLabel1.setText("Etkinlik Ara :");
@@ -91,32 +86,25 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       try {      
-           
-   
-         Statement stmt;
-         ResultSet rsa;
-
-            stmt = Baglanti.baglanttiac().createStatement();
-            
-            rsa = stmt.executeQuery("select e.E_id,e.E_adi from eceokul.Etkinlikler e where e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%'");
+        
+        Statement stmt = null;
+         ResultSet rs;
+         
+         //
+        try {
+          
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("select e.E_id,e.E_adi from eceokul.Etkinlikler e where e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%'");
             jLabel2.setText("");
-            while (rsa.next()) {
+            while (rs.next()) {
                // System.out.println(rs.getString("E_id")+"  "+ rs.getString("E_adi"));
-               jLabel2.setText(rsa.getString("E_id")+"  "+ rsa.getString("E_adi"));
+               jLabel2.setText(rs.getString("E_id")+"  "+ rs.getString("E_adi"));
                 
             }
         } catch (SQLException ex) {
             Logger.getLogger(ETKINLIX_GIRIS_FRAME.class.getName()).log(Level.SEVERE, null, ex);
-        }catch (ClassNotFoundException ex) {
-                Logger.getLogger(ETKINLIX_GIRIS_FRAME.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InstantiationException ex) {
-                Logger.getLogger(ETKINLIX_GIRIS_FRAME.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(ETKINLIX_GIRIS_FRAME.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        }
        
            
         
@@ -124,12 +112,8 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextPane1MouseClicked
-        jTextPane1.setText("");
-    }//GEN-LAST:event_jTextPane1MouseClicked
 
-
-  static Connection conn;
+   static Connection conn;
     public static void main(String args[]) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         /*
          * Set the Nimbus look and feel
@@ -160,8 +144,14 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         
         
         
-            
+            Class c = Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
+            Driver drv = (Driver) c.newInstance();
+
+            
+            conn = drv.connect("jdbc:sqlserver://159.253.37.201; databaseName=mustafa; user=mustafauser; password=mustafa2703", null);
+
+            
 
         /*
          * Create and display the form
