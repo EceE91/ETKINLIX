@@ -107,7 +107,9 @@ public class EtkinliX_Login extends javax.swing.JFrame {
          //
         try {
             jLabel3.setText("");
-            stmt = conn.createStatement();
+           
+                stmt = Baglanti.baglanttiac().createStatement();
+            
             rs = stmt.executeQuery("select * from eceokul.LoginEtkinlix lgn where lgn.Login_kullanici_adi='"+jTextPane1.getText()+"' and lgn.Login_pwd='"+jTextPane2.getText()+"'");
 
             if(rs.next()){
@@ -125,7 +127,13 @@ public class EtkinliX_Login extends javax.swing.JFrame {
             
         } catch (SQLException ex) {
             Logger.getLogger(ETKINLIX_GIRIS_FRAME.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (ClassNotFoundException ex) {
+                Logger.getLogger(EtkinliX_Login.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(EtkinliX_Login.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(EtkinliX_Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
        
         
 
