@@ -148,6 +148,7 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
 
             Driver drv = (Driver) c.newInstance();
 
+            
             conn = drv.connect("jdbc:sqlserver://159.253.37.201; databaseName=mustafa; user=mustafauser; password=mustafa2703", null);
 
             
