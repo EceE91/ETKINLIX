@@ -34,11 +34,12 @@ public class ETKINLIX {
 
             ResultSet rs;
 
-            rs = stmt.executeQuery("select * from eceokul.Yorumlar ");
+            rs = stmt.executeQuery("select * from eceokul.Etkinlikler");
 
             while (rs.next()) {
-
-                System.out.println(rs.getString("Yorum_yapan_kisi_mail"));
+                System.out.println(rs.getString("E_id")+"  "+ rs.getString("E_adi"));
+               
+                
             }
 
         } catch (ClassNotFoundException e) {
