@@ -7,6 +7,8 @@ package etkınlıx;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import etkınlıx.Veritabani;
 
 /**
  *
@@ -19,6 +21,7 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
      */
     public ETKINLIX_GIRIS_FRAME() {
         initComponents();
+        doldurCombo();
     }
 
     /**
@@ -35,8 +38,15 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(jTextPane1);
 
@@ -51,35 +61,52 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
 
         jLabel2.setText("jLabel2");
 
+        jLabel3.setText("Şehir :");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(213, 213, 213)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addGap(10, 10, 10)
+                .addComponent(jComboBox1, 0, 182, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(157, 157, 157)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(9, 9, 9))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel1)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(55, 55, 55)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(55, 55, 55)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(185, Short.MAX_VALUE))
         );
 
@@ -95,7 +122,13 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         try {
           
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("select e.E_id,e.E_adi from eceokul.Etkinlikler e where e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%'");
+            if(jComboBox1.getSelectedItem() != "Hepsi"){
+
+                rs = stmt.executeQuery( "select e.E_id,e.E_adi from eceokul.Etkinlikler e join eceokul.Etkinlikler_Salonlar es on es.Etkinlik_tablo_id=e.E_id join eceokul.Salonlar salon on salon.Salon_id=es.Salonlar_tablo_id join eceokul.Sehirler s on s.Sehir_id=salon.Sehir_tablo_id where (e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%' ) and s.Sehir_Adi='"+jComboBox1.getSelectedItem()+"'");        
+            
+            }else{
+                rs = stmt.executeQuery("select e.E_id,e.E_adi from eceokul.Etkinlikler e where e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%'");
+            }
             jLabel2.setText("");
             while (rs.next()) {
                // System.out.println(rs.getString("E_id")+"  "+ rs.getString("E_adi"));
@@ -112,7 +145,22 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        doldurCombo();
+    }//GEN-LAST:event_formWindowOpened
+
+    public void doldurCombo(){
+        jComboBox1.addItem("Hepsi");
+        jComboBox1.addItem("Ankara");
+        jComboBox1.addItem("Antalya");
+        jComboBox1.addItem("İzmir");
+    }
+    
    static Connection conn;
     public static void main(String args[]) throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         /*
@@ -141,8 +189,8 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ETKINLIX_GIRIS_FRAME.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
-        
+         
+            
         
             Class c = Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
@@ -150,7 +198,8 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
 
             
             conn = drv.connect("jdbc:sqlserver://159.253.37.201; databaseName=mustafa; user=mustafauser; password=mustafa2703", null);
-
+           
+            
             
 
         /*
@@ -160,13 +209,16 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
 
             public void run() {
                 new ETKINLIX_GIRIS_FRAME().setVisible(true);
+                
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
