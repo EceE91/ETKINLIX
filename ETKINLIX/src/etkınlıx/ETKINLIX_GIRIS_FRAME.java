@@ -39,7 +39,7 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        jComboBox2 = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -63,13 +63,6 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
 
         jLabel3.setText("Şehir :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,9 +74,9 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addGap(10, 10, 10)
-                .addComponent(jComboBox1, 0, 182, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox2, 0, 196, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -104,9 +97,11 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(55, 55, 55)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel3)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(185, Short.MAX_VALUE))
         );
 
@@ -122,9 +117,9 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         try {
           
             stmt = conn.createStatement();
-            if(jComboBox1.getSelectedItem() != "Hepsi"){
+            if(jComboBox2.getSelectedItem() != "Hepsi"){
 
-                rs = stmt.executeQuery( "select e.E_id,e.E_adi from eceokul.Etkinlikler e join eceokul.Etkinlikler_Salonlar es on es.Etkinlik_tablo_id=e.E_id join eceokul.Salonlar salon on salon.Salon_id=es.Salonlar_tablo_id join eceokul.Sehirler s on s.Sehir_id=salon.Sehir_tablo_id where (e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%' ) and s.Sehir_Adi='"+jComboBox1.getSelectedItem()+"'");        
+                rs = stmt.executeQuery( "select e.E_id,e.E_adi from eceokul.Etkinlikler e join eceokul.Etkinlikler_Salonlar es on es.Etkinlik_tablo_id=e.E_id join eceokul.Salonlar salon on salon.Salon_id=es.Salonlar_tablo_id join eceokul.Sehirler s on s.Sehir_id=salon.Sehir_tablo_id where (e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%' ) and s.Sehir_Adi='"+jComboBox2.getSelectedItem()+"'");        
             
             }else{
                 rs = stmt.executeQuery("select e.E_id,e.E_adi from eceokul.Etkinlikler e where e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%'");
@@ -145,20 +140,16 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        doldurCombo();
+ 
     }//GEN-LAST:event_formWindowOpened
 
     public void doldurCombo(){
-        jComboBox1.addItem("Hepsi");
-        jComboBox1.addItem("Ankara");
-        jComboBox1.addItem("Antalya");
-        jComboBox1.addItem("İzmir");
+        jComboBox2.addItem("Hepsi");
+        jComboBox2.addItem("Ankara");
+        jComboBox2.addItem("Antalya");
+        jComboBox2.addItem("İzmir");
     }
     
    static Connection conn;
@@ -190,7 +181,7 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         }
         //</editor-fold>
          
-            
+         
         
             Class c = Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
@@ -209,13 +200,13 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
 
             public void run() {
                 new ETKINLIX_GIRIS_FRAME().setVisible(true);
-                
+                         
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

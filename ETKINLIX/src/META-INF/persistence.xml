@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="ETKINLIXPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>etkınlıx.EtkinlikTur</class>
+    <class>etkınlıx.Oylama</class>
+    <class>etkınlıx.LoginEtkinlix</class>
+    <class>etkınlıx.PersonelInfo</class>
+    <class>etkınlıx.Sehirler</class>
+    <class>etkınlıx.Rezervasyon</class>
+    <class>etkınlıx.Sysdiagrams</class>
+    <class>etkınlıx.Sanatcilar</class>
+    <class>etkınlıx.Etkinlikler</class>
+    <class>etkınlıx.Salonlar</class>
+    <class>etkınlıx.Yorumlar</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://159.253.37.201;databaseName=mustafa"/>
+      <property name="javax.persistence.jdbc.password" value="mustafa2703"/>
+      <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="javax.persistence.jdbc.user" value="mustafauser"/>
+    </properties>
+  </persistence-unit>
+</persistence>
