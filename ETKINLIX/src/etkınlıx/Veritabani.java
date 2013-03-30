@@ -40,9 +40,11 @@ public class Veritabani {
         }
     }
 
-    public Boolean isLogin(String id, String sifre) {
-    Boolean giris=false;    
+    public Boolean isLogin(String id, String sifre) throws ClassNotFoundException {
+    Boolean giris=false;     
+    
     try {
+
             stmt = conn.createStatement();
             rs = stmt.executeQuery("select * from eceokul.LoginEtkinlix lgn where lgn.Login_kullanici_adi='"+id+"' and lgn.Login_pwd='"+sifre+"'");
             

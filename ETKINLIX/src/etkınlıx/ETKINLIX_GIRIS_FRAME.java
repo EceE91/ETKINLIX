@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import etkınlıx.Veritabani;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -67,19 +68,18 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(213, 213, 213)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, 0, 196, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox2, 0, 196, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addGap(9, 9, 9))
@@ -89,20 +89,18 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel1)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(55, 55, 55)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addGap(55, 55, 55)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         pack();
@@ -119,14 +117,19 @@ public class ETKINLIX_GIRIS_FRAME extends javax.swing.JFrame {
             stmt = conn.createStatement();
             if(jComboBox2.getSelectedItem() != "Hepsi"){
 
-                rs = stmt.executeQuery( "select e.E_id,e.E_adi from eceokul.Etkinlikler e join eceokul.Etkinlikler_Salonlar es on es.Etkinlik_tablo_id=e.E_id join eceokul.Salonlar salon on salon.Salon_id=es.Salonlar_tablo_id join eceokul.Sehirler s on s.Sehir_id=salon.Sehir_tablo_id where (e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%' ) and s.Sehir_Adi='"+jComboBox2.getSelectedItem()+"'");        
+                rs = stmt.executeQuery( "select top 6 e.E_id,e.E_adi from eceokul.Etkinlikler e join eceokul.Etkinlikler_Salonlar es on es.Etkinlik_tablo_id=e.E_id join eceokul.Salonlar salon on salon.Salon_id=es.Salonlar_tablo_id join eceokul.Sehirler s on s.Sehir_id=salon.Sehir_tablo_id where (e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%' ) and s.Sehir_Adi='"+jComboBox2.getSelectedItem()+"' order by E_bas_tarih desc");        
             
             }else{
-                rs = stmt.executeQuery("select e.E_id,e.E_adi from eceokul.Etkinlikler e where e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%'");
-            }
+               if(jTextPane1.getText().isEmpty() == true){
+                   rs = stmt.executeQuery("select top 6 e.E_id,e.E_adi from eceokul.Etkinlikler e order by E_bas_tarih desc");
+                }else{
+                    rs = stmt.executeQuery("select top 6 e.E_id,e.E_adi from eceokul.Etkinlikler e where e.E_Adi like '%"+jTextPane1.getText()+"%' or e.E_bas_tarih  like '%"+jTextPane1.getText()+"%' order by E_bas_tarih desc");
+               }
+             }
             jLabel2.setText("");
             while (rs.next()) {
                // System.out.println(rs.getString("E_id")+"  "+ rs.getString("E_adi"));
+                
                jLabel2.setText(rs.getString("E_id")+"  "+ rs.getString("E_adi"));
                 
             }

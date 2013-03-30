@@ -1,6 +1,8 @@
 package etkınlıx;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class EtkinliX_Login extends javax.swing.JFrame {
@@ -88,20 +90,24 @@ public class EtkinliX_Login extends javax.swing.JFrame {
         ETKINLIX_GIRIS_FRAME grfrm;
         jLabel3.setText("");
         Veritabani vt = new Veritabani();
+        try {
+            if (vt.isLogin(jTextPane1.getText(), jTextPane2.getText())) {
 
-        if (vt.isLogin(jTextPane1.getText(), jTextPane2.getText())) {
+                this.setVisible(false);
 
-            this.setVisible(false);
+                grfrm = new ETKINLIX_GIRIS_FRAME();
+                grfrm.setVisible(true);
+            } else {
 
-            grfrm = new ETKINLIX_GIRIS_FRAME();
-            grfrm.setVisible(true);
-        } else {
-
-            String st = "HATALI KULLANICI ADI YA DA PAROLA !";
-            JOptionPane.showMessageDialog(null, st);
-            jTextPane1.setText("");
-            jTextPane2.setText("");
+                String st = "HATALI KULLANICI ADI YA DA PAROLA !";
+                JOptionPane.showMessageDialog(null, st);
+                jTextPane1.setText("");
+                jTextPane2.setText("");
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EtkinliX_Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+      
 
 
 
